@@ -5,11 +5,13 @@ module.exports =
     "host": "162.243.60.106"
     }
   , "test":
-    { "driver":   "memory"
-    }
+    { "driver":   "redis-hq",
+    "database": 3,
+    "host": "162.243.60.106"
+  }
   , "production":
     { "driver":   "redis-hq",
-    "database": 2,
+    "database": 6,
     "host": "162.243.60.106"
     }
   };
