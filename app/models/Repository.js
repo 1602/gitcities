@@ -4,10 +4,10 @@ var async = require('async');
 module.exports = function(compound, Repository) {
     var Commit = compound.models.Commit;
 
-    Repository.afterCreate = function() {
-        this.syncData();
-        this.lastCheckedAt = new Date();
-        this.save();
+    Repository.validatesUniquenessOf('name');
+
+    Repository.afterCreate = function(next) {
+        this.syncData(next);
     };
 
     Repository.prototype.syncData = function(done) {
@@ -33,6 +33,7 @@ module.exports = function(compound, Repository) {
 
     Repository.prototype.loadStats = function(force, cb) {
         if ('function' === typeof force) {
+            cb = force;
             force = false;
         }
         var repo = this;
@@ -53,6 +54,7 @@ module.exports = function(compound, Repository) {
 
     Repository.prototype.loadCommits = function(force, cb) {
         if ('function' === typeof force) {
+            cb = force;
             force = false;
         }
         var repo = this;
@@ -63,7 +65,6 @@ module.exports = function(compound, Repository) {
         compound.gh.get(uri, {ifModifiedSince: !force && this.lastCheckedAt}, function(err, data, res) {
             if (data) {
                 async.forEach(data, function(line, next) {
-                    console.log(line);
                     var userId;
                     if (line.author) {
                         userId = line.author.id;
@@ -79,9 +80,10 @@ module.exports = function(compound, Repository) {
                         userId: userId,
                         repoId: repo.id
                     })).save(next);
-                }, cb);
-            } else if(cb) {
-                cb('not modified');
+                });
+            }
+            if ('function' === typeof cb) {
+                cb();
             }
         });
     };
