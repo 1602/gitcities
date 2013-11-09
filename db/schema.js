@@ -5,8 +5,8 @@ define('User', function() {
 });
 
 define('Commit', function() {
-    property('hash', String);
-    property('username', String);
+    property('id', String);
+    property('userId', String);
     property('date', Date);
 
     set('defaultSort', 'date DESC');
@@ -14,8 +14,12 @@ define('Commit', function() {
 
 define('Repository', function() {
     property('name', String, {index: true});
-    property('lastCheckedAt', Date);
+    property('lastCheckedAt', Date, {default: function () {return new Date(0)}});
     property('karma', Number);
+    property('watchers', Number);
+    property('stars', Number);
+    property('forks', Number);
+    property('size', Number);
 
     set('defaultSort', 'lastCheckedAt ASC');
 });

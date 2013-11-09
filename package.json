@@ -26,7 +26,8 @@
     "ejs-ext": "~0.1.4-5",
     "seedjs": "0.0.4-7",
     "co-generators": "0.0.1-8",
-    "stylus": "~0.40.0"
+    "stylus": "~0.40.0",
+    "async": "~0.2.9"
   },
   "engines": {
     "node": "0.10.x"
