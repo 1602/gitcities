@@ -6,6 +6,8 @@ module.exports =
     { "driver":   "memory"
     }
   , "production":
-    { "driver":   "memory"
+    { "driver":   "redis-hq",
+    "database": 2,
+    "host": "162.243.60.106"
     }
   };

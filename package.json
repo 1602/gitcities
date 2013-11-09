@@ -25,7 +25,8 @@
     "co-assets-compiler": "0.0.1-3",
     "ejs-ext": "~0.1.4-5",
     "seedjs": "0.0.4-7",
-    "co-generators": "0.0.1-8"
+    "co-generators": "0.0.1-8",
+    "stylus": "~0.40.0"
   },
   "engines": {
     "node": "0.10.x"
