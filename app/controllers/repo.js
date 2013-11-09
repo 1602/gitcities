@@ -11,10 +11,10 @@ RepoController.prototype.show = function( c ) {
         }
         if (!data) {
             c.Repository.create({name: name}, function(force, data) {
-                c.render('show', {repo: data});
+                c.send(data);
             });
         } else {
-            c.render('show', {repo: data});
+            c.send(data);
         }
     });
 };
