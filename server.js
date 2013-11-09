@@ -1,26 +1,32 @@
-// https://github.com/nko4/website/blob/master/module/README.md#nodejs-knockout-deploy-check-ins
+#!/usr/bin/env node
 require('nko')('FRX_lGKhkFPuvGLS');
 
 var isProduction = (process.env.NODE_ENV === 'production');
 var http = require('http');
-var port = (isProduction ? 80 : 8000);
+var port = (isProduction ? 80 : 3000);
+var host = process.env.HOST || '0.0.0.0';
 
-http.createServer(function (req, res) {
-  // http://blog.nodeknockout.com/post/35364532732/protip-add-the-vote-ko-badge-to-your-app
-  var voteko = '<iframe src="http://nodeknockout.com/iframe/nodespots" frameborder=0 scrolling=no allowtransparency=true width=115 height=25></iframe>';
+/**
+ * Server module exports method returning new instance of app.
+ *
+ * @param {Object} params - compound/express webserver initialization params.
+ * @returns CompoundJS powered express webserver
+ */
+var app = module.exports = function getServerInstance(params) {
+    params = params || {};
+    // specify current dir as default root of server
+    params.root = params.root || __dirname;
+    return require('compound').createServer(params);
+};
 
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end('<html><body>' + voteko + '</body></html>\n');
-}).listen(port, function(err) {
-  if (err) { console.error(err); process.exit(-1); }
+if (!module.parent) {
 
-  // if run as root, downgrade to the owner of this file
-  if (process.getuid() === 0) {
-    require('fs').stat(__filename, function(err, stats) {
-      if (err) { return console.error(err); }
-      process.setuid(stats.uid);
+    var server = app();
+    server.listen(port, host, function () {
+        console.log(
+            'Compound server listening on %s:%d within %s environment',
+            host, port, server.set('env')
+        );
     });
-  }
+}
 
-  console.log('Server running at http://0.0.0.0:' + port + '/');
-});
