@@ -1,23 +1,22 @@
-/*
- db/schema.js contains database schema description for application models
- by default (when using jugglingdb as ORM) this file uses database connection
- described in config/database.json. But it's possible to use another database
- connections and multiple different schemas, docs available at
+define('User', function() {
+    property('username', String, { index: true });
+    property('email', String, { index: true });
+    property('karma', Number);
+});
 
- http://railwayjs.com/orm.html
+define('Commit', function() {
+    property('hash', String);
+    property('username', String);
+    property('date', Date);
 
- Example of model definition:
+    set('defaultSort', 'date DESC');
+});
 
- define('User', function () {
-     property('email', String, { index: true });
-     property('password', String);
-     property('activated', Boolean, {default: false});
- });
+define('Repository', function() {
+    property('name', String, {index: true});
+    property('lastCheckedAt', Date);
+    property('karma', Number);
 
- Example of schema configured without config/database.json (heroku redistogo addon):
- schema('redis', {url: process.env.REDISTOGO_URL}, function () {
-     // model definitions here
- });
-
-*/
+    set('defaultSort', 'lastCheckedAt ASC');
+});
 
