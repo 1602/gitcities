@@ -7,6 +7,7 @@ define('User', function() {
 define('Commit', function() {
     property('id', String);
     property('userId', String);
+    property('repoId', Number);
     property('date', Date);
 
     set('defaultSort', 'date DESC');
@@ -20,6 +21,9 @@ define('Repository', function() {
     property('stars', Number);
     property('forks', Number);
     property('size', Number);
+    property('issues', Number);
+    property('network', Number);
+    property('subscribers', Number);
 
     set('defaultSort', 'lastCheckedAt ASC');
 });
