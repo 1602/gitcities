@@ -27,7 +27,8 @@
     "seedjs": "0.0.4-7",
     "co-generators": "0.0.1-8",
     "stylus": "~0.40.0",
-    "async": "~0.2.9"
+    "async": "~0.2.9",
+    "coffee-script": "*"
   },
   "engines": {
     "node": "0.10.x"
