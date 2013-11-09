@@ -1,6 +1,6 @@
 module.exports = 
   { "development":
-    { "driver":   "redis-hq"
+    { "driver":   "redis-hq",
     "database": 3,
     "host": "162.243.60.106"
     }
