@@ -1,8 +1,8 @@
 module.exports = RepoController
 function RepoController(){}
 RepoController.prototype.show = function( c ) {
-  this.title = 'Repo show';
   name = c.params.username + '/' + c.params.reponame
+  this.title = name;
   c.Repository.findOne(
     {where: {name: name}},
     function(force, data) {
