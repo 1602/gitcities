@@ -3,6 +3,7 @@ var async = require('async');
 
 module.exports = function(compound, Repository) {
     var Commit = compound.models.Commit;
+    var User = compound.models.User;
 
     Repository.validatesUniquenessOf('name');
 
@@ -49,6 +50,25 @@ module.exports = function(compound, Repository) {
             }
             repo.lastCheckedAt = new Date();
             repo.save(cb);
+        });
+    };
+
+    Repository.prototype.loadCollaborators = function(force, cb) {
+        if ('function' === typeof force) {
+            cb = force;
+            force = false;
+        }
+        var repo = this;
+        compound.gh.get('/repos/' + this.name + '/collaborators?per_page=100', {ifModifiedSince: !force && this.lastCheckedAt}, function(err, data, res) {
+            if (data) {
+                async.forEach(data, function(user, next) {
+                    User.updateOrCreate({
+                        id: user.id,
+                        username: user.login
+                    }, next);
+                });
+            }
+            cb();
         });
     };
 
