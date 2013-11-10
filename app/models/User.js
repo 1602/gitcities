@@ -7,9 +7,6 @@ module.exports = function(compound, User) {
     User.hasAndBelongsToMany('repositories');
     User.hasMany('contributions');
 
-    User.prototype.loadData = function() {
-    };
-
     User.prototype.loadOwnRepos = function(cb) {
         var user = this;
         compound.gh.get('/users/' + this.username + '/repos?type=owner&sort=pushed', {ifNoneMatch: true}, function(err, data) {
@@ -52,6 +49,27 @@ module.exports = function(compound, User) {
             user.nishkamKarma = kc; // contributor's karma
             user.lastCheckedAt = new Date();
             user.save(cb);
+        });
+    };
+
+    User.prototype.loadProfile = function(force, cb) {
+        if ('function' === typeof force) {
+            cb = force;
+            force = false;
+        }
+        var user = this;
+        compound.gh.get('/users/' + this.username, {ifNoneMatch: !force}, function(err, data, res) {
+            if (data) {
+                user.avatar = data.avatar_url;
+                user.name = data.name;
+                user.location = data.location;
+                user.publicRepos = data.public_repos;
+                user.followers = data.followers;
+                user.following = data.following;
+                cb(null, user);
+            } else {
+                cb(err, null);
+            }
         });
     };
 

@@ -7,6 +7,15 @@ define('User', function() {
     property('nishkamKarma', Number, {sort: true});
     property('lastCheckedAt', Date, {sort: true, default: function () {return new Date(0)}});
 
+    property('avatar', String);
+    property('name', String);
+    property('location', String);
+    property('publicRepos', Number);
+    property('followers', Number);
+    property('following', Number);
+    property('languages', [], {index: true});
+    property('visitedAt', Date, {sort: true, index: true});
+
     set('defaultSort', 'nishkamKarma DESC');
 });
 

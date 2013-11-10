@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+    <div class="panel-heading">
+      <strong>
+        Top 20 contributors
+      </strong>
+    </div>
+    <div class="panel-body">
+      <% topContributors.forEach(function(user) { %>
+      <a href="/<%- user.username %>" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="<%- user.name + ' ' + user.nishkamKarma %>"><img src="<%- user.avatar %>" width="80" heigth="80" /></a> <!--%- linkTo(user.name || user.username, '/' + user.username) %> <%- user.nishkamKarma %><br/-->
+      <% }) %>
+    </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="panel panel-default">
+    <div class="panel-heading">
+      <strong>
+        Top 20 authors
+      </strong>
+    </div>
+    <div class="panel-body">
+      <% topAuthors.forEach(function(user) { %>
+      <a href="/<%- user.username %>"><img src="<%- user.avatar %>" width="80" heigth="80" /></a> <!--%- linkTo(user.name || user.username, '/' + user.username) %> <%- user.kriyamanaKarma %><br/-->
+      <% }) %>
+    </div>
+    </div>
+  </div>
+
+</div>

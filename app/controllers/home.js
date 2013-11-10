@@ -4,9 +4,11 @@ function HomeController() {
 }
 
 HomeController.prototype.show = function(c) {
+    this.title = 'Opensource world';
+
     c.User.all({order: 'nishkamKarma desc', limit: 20}, function(err, users) {
         c.User.all({order: 'kriyamanaKarma desc', limit: 20}, function(err, authors) {
-            c.send({
+            c.render({
                 topContributors: users.map(prepare),
                 topAuthors: authors.map(prepare)
             });
