@@ -7,10 +7,17 @@
 <br>What's next: we'll improve algorithms of calculating Karma to take into account user activities such as commit rates, comments and issues.</span></p><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;text-decoration:none;">&nbsp;</span></p></div>
 </div>
 
-<% cities.forEach(function(city) { %>
-<%- city.name %>
-<%- city.stars %>
-<% }) %>
+<ul class="nav nav-pills">
+  <% cities.forEach(function(city) { %>
+  <li>
+    <a href="/<%- city.name %>"> <%- city.name %>
+    <span class="badge">
+      <%- city.karma %>
+    </span>
+    </a>
+  </li>
+  <% }) %>
+</ul>
 
 
     <% citizens.forEach(function(user) { %><a href="/<%- user.username %>" data-toggle="popover" data-html="true" data-trigger="hover" data-placement="top" data-content="<strong><%- user.name || user.username%></strong><br/><%- user.location %><hr/>Contibutor's karma: <strong><%- user.nishkamKarma %></strong><br/>Author's karma: <strong><%- user.kriyamanaKarma %></strong>"><img src="<%- user.avatar ? user.avatar + '&s=160' : 'http://placehold.it/160x160' %>" width="80" heigth="80" /></a><% }) %>

@@ -14,7 +14,7 @@ module.exports = function(compound, Repository) {
 
     Repository.getter.karma = function() {
         with (this) {
-            return stars + network * 2 + subscribers * 3 - issues * 5;
+            return stars + subscribers * 3 - issues * 5;
         }
     };
 
