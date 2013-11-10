@@ -3,25 +3,29 @@ module.exports = UserController;
 function UserController() {
 }
 
-var cache;
+var cache = {};
 
 UserController.prototype.show = function(c) {
 
-    if (cache) {
-        return respondWith(cache);
+    var name = c.req.param('username');
+
+    if (cache[name] && !c.req.param('nocache')) {
+        return respondWith(cache[name]);
     }
 
-    c.User.findOne({where: {username: c.req.param('username')}}, function(err, user) {
+    c.User.findOne({where: {username: name}}, function(err, user) {
         c.locals.title = user.name || user.username;
         user.loadProfile(function(err) {
-            cache = {
-                user: user
-            };
-            respondWith(cache);
-            user.visitedAt = new Date();
-            user.save();
+            user.explainKarma(function(karma) {
+                cache[name] = {
+                    user: user,
+                    karma: karma
+                };
+                respondWith(cache[name]);
+                user.visitedAt = new Date();
+                user.save();
+            });
         });
-
     });
 
     function respondWith(data) {
@@ -31,4 +35,5 @@ UserController.prototype.show = function(c) {
             c.render(data);
         }
     }
+
 };

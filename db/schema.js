@@ -23,6 +23,7 @@ define('Commit', function() {
     property('id', String);
     property('userId', Number, {index: true});
     property('repoId', Number, {index: true});
+    property('message', String);
     property('date', Date);
 
     set('defaultSort', 'date DESC');

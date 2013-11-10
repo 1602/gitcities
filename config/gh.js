@@ -13,5 +13,5 @@ exports.test = {
 exports.development = {
     key: '59408b3569991b654f8e',
     secret: '64e33f771fc37d2b71fb8ba9c6205543c7175a5d',
-    token: '5f4bf8c803df045d4b1d62f56cf3a54ed3c74807'
+    token: '41aee06d6d018c1e65d1a06678baa9b0c40e8ce4'
 };

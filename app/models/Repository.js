@@ -32,9 +32,8 @@ module.exports = function(compound, Repository) {
             },
             function(next) {
                 repo.loadStats(next);
-            },
-            done
-        ]);
+            }
+        ], done);
     };
 
     Repository.prototype.syncAllData = function(done) {
@@ -53,10 +52,15 @@ module.exports = function(compound, Repository) {
         ]);
     };
 
-    Repository.processNext = function() {
+    Repository.processNext = function(cb) {
         Repository.findOne(function(err, repo) {
             if (repo) {
-                repo.syncData();
+                repo.syncData(function() {
+                    repo.lastCheckedAt = new Date();
+                    repo.save(cb);
+                });
+            } else if (cb) {
+                cb();
             }
         });
     };
@@ -79,7 +83,9 @@ module.exports = function(compound, Repository) {
                 repo.subscribers = data.subscribers_count;
                 repo.language = data.language;
             }
-            cb(!data && res.status !== 304 ? new Error('Not found') : null);
+            if (typeof cb === 'function') {
+                cb(!data && res.status !== 304 ? new Error('Not found') : null);
+            }
         });
     };
 
