@@ -4,5 +4,5 @@ exports.makeGutHubLink = function(s) {
         link = s.username || s.name;
         s = s.name;
     }
-    return '<a href="/' + link + '">' + s + '</a>';
+    return '<a href="https://github.com/' + link + '">' + s + '</a>';
 };
