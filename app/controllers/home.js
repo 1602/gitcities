@@ -5,6 +5,10 @@ function HomeController() {
 
 var cache, limit = 100;
 
+setInterval(function() {
+    cache = null;
+}, 100000);
+
 HomeController.prototype.show = function(c) {
     this.title = 'NodeJS Suburbs';
 
