@@ -3,6 +3,7 @@ var async = require('async');
 module.exports = function(compound, User) {
     var Commit = compound.models.Commit;
     var Repository = compound.models.Repository;
+    var Contribution = compound.models.Contribution;
 
     User.hasAndBelongsToMany('repositories');
     User.hasMany('contributions');
@@ -24,6 +25,7 @@ module.exports = function(compound, User) {
     };
 
     User.prototype.explainKarma = function(cb) {
+        var user = this, ka = 0, kc = 0;
         var now = Date.now();
         var karma = {
             week: {a: 0, c: 0, p: {}},
@@ -34,20 +36,29 @@ module.exports = function(compound, User) {
         var ownRepos = this.authorOf.map(function(x) {
             return x.id;
         });
-        Commit.all({min: Date.now() - 86400000 * 108, max: Date.now(), where: {userId: this.id}}, function(err, cs) {
+        var memberRepos = [];
+        user.repositories(function(e, cs) {
+            cs.forEach(function(c) {
+                memberRepos.push(c.repositoryId);
+            });
+        Commit.all({min: Date.now() - 86400000 * 365, max: Date.now(), where: {userId: this.id}}, function(err, cs) {
 
             cs.forEach(function(c) {
                 var daysAgo = Math.ceil((now - c.date.getTime()) / 86400000);
                 if (daysAgo <= 1) daysAgo = 2;
                 var ca, cc, type;
-                if (ownRepos.indexOf(c.repoId) === -1) {
-                    type = 'contributor';
-                    ca = 10;
-                    cc = 50;
-                } else {
+                if (ownRepos.indexOf(c.repoId) !== -1) {
                     type = 'author';
                     cc = 10;
                     ca = 50;
+                } else if (memberRepos.indexOf(c.repoId) !== -1) {
+                    type = 'member';
+                    cc = 20;
+                    ca = 40;
+                } else {
+                    type = 'contributor';
+                    cc = 50;
+                    ca = 10;
                 }
                 var gravity = Math.log(daysAgo);
                 var period = 'later';
@@ -57,20 +68,20 @@ module.exports = function(compound, User) {
                     period = 'month';
                 }
                 karma[period].a += c.gainA = Math.round(ca / gravity);
+                ka += c.gainA;
                 karma[period].c += c.gainC = Math.round(cc / gravity);
-                c.gain = c.gainC + c.gainA;
+                kc += c.gainC;
+                c.gain = Math.round(c.gainC * Math.PI + c.gainA);
                 karma[period].p[c.repoId] = karma[period].p[c.repoId] || [];
                 karma[period].p[c.repoId].push(c);
                 projectIds[c.repoId] = null;
             });
-            Repository.all({where: {id: {inq: Object.keys(projectIds)}}}, function(err, projects) {
-                projects.forEach(function(x) {
-                    projectIds[x.id] = x;
-                });
-                karma.projects = projectIds;
-                console.log(karma.projects);
-                cb(karma);
-            });
+            user.karma = Math.round(ka + kc * Math.PI);
+            user.kriyamanaKarma = ka; // author's karma
+            user.nishkamKarma = kc; // contributor's karma
+            karma.projectIds = projectIds;
+            cb(karma);
+        });
         });
     };
 
@@ -95,7 +106,7 @@ module.exports = function(compound, User) {
                 ka += Math.round(ca / gravity);
                 kc += Math.round(cc / gravity);
             });
-            user.karma = ka + kc * Math.PI;
+            user.karma = Math.round(ka + kc * Math.PI);
             user.kriyamanaKarma = ka; // author's karma
             user.nishkamKarma = kc; // contributor's karma
             user.lastCheckedAt = new Date();
