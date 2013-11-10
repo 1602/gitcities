@@ -5,16 +5,18 @@ module.exports = function (compound) {
 
     app.configure('production', function () {
 
-        app.compound.models.Repository.processNext(function again() {
-            setTimeout(function() {
-                app.compound.models.Repository.processNext(again);
-            }, 200);
-        });
+        app.compound.on('ready', function() {
+            app.compound.models.Repository.processNext(function again() {
+                setTimeout(function() {
+                    app.compound.models.Repository.processNext(again);
+                }, 200);
+            });
 
-        app.compound.models.User.processNext(function anotherUser() {
-            setTimeout(function() {
-                app.compound.models.User.processNext(anotherUser);
-            }, 200);
+            app.compound.models.User.processNext(function anotherUser() {
+                setTimeout(function() {
+                    app.compound.models.User.processNext(anotherUser);
+                }, 200);
+            });
         });
 
         app.enable('quiet');
