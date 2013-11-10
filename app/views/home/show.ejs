@@ -1,19 +1,13 @@
 <div class="row">
   <div class="col-md-12">
     <% citizens.forEach(function(user) { %><a href="/<%- user.username %>" data-toggle="popover" data-html="true" data-trigger="hover" data-placement="bottom" data-content="<strong><%- user.name || user.username%></strong><br/><%- user.location %><hr/>Contibutor's karma: <strong><%- user.nishkamKarma %></strong><br/>Author's karma: <strong><%- user.kriyamanaKarma %></strong>"><img src="<%- user.avatar ? user.avatar + '&s=160' : 'http://placehold.it/160x160' %>" width="80" heigth="80" /></a><% }) %>
-  </div>
-</div>
 
-<hr/>
+<hr>
 
 <div class="row">
-  <h2>How can I get information on particular Node citizen or city?</h2>
-
-  <div class="col-md-7">
+  <div class="col-md-8">
+  <h2>How to find <a href="https://medium.com/products-i-wish-existed/ddd1f7be1415">citizen</a> or city<a href="https://news.ycombinator.com/item?id=5686139">?</a></h2>
     <form class="form" method="POST" action="/">
-      <p>
-        Just enter username or repository name from Github
-      </p>
       <div class="input-group input-group-lg">
         <span class="input-group-addon">https://github.com/</span>
         <input type="text" name="name" class="form-control" placeholder="Username[/Reponame]">
@@ -21,6 +15,9 @@
           <input type="submit" value="Go!" class="btn btn-default">
         </span>
       </div>
+      <span class="help-block">
+        Just enter username or repository name from Github
+      </span>
     </form>
   </div>
 </div>
@@ -28,29 +25,26 @@
 <hr/>
 
 <div class="row">
-  <h2>The largest cities in Node.JS world</h2>
+  <h2>The largest cities in NodeJS world</h2>
   <div class="col-md-12"><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;">We have calculated the rating of node.js cities based the stars, contributors, subscribers, open issues and forks. Based on the rating we have built the list of the largest node.JS cities. 
         <br> What's next? The rating formula will be improved in order to take into accounty city dynamics, e.g. commits, activities, etc. </span></p><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;text-decoration:none;">&nbsp;</span></p></div>
 
   <ul class="nav nav-pills">
     <% cities.forEach(function(city) { %>
     <li>
-      <a href="/<%- city.name %>"> <%- city.name %>
-        <span class="badge">
-          <%- city.karma %>
-        </span>
-      </a>
+      <a href="/<%- city.name %>"> <%- city.name %> <span class="badge"> <%- city.karma %> </span> </a>
     </li>
     <% }) %>
   </ul>
 </div>
-
-
 
 <script>
   $(function() {
     $('a[data-toggle="popover"]').popover();
   });
 </script>
+
+<iframe src="http://nodeknockout.com/iframe/nodespots" frameborder=0 scrolling=no allowtransparency=true width=115 height=25>
+</iframe>
 
 <footer></footer>
