@@ -41,7 +41,7 @@ module.exports = function(compound, User) {
             cs.forEach(function(c) {
                 memberRepos.push(c.repositoryId);
             });
-        Commit.all({min: Date.now() - 86400000 * 365, max: Date.now(), where: {userId: this.id}}, function(err, cs) {
+        Commit.all({min: Date.now() - 86400000 * 365, max: Date.now(), where: {userId: user.id}}, function(err, cs) {
 
             cs.forEach(function(c) {
                 var daysAgo = Math.ceil((now - c.date.getTime()) / 86400000);

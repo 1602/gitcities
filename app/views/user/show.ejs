@@ -35,6 +35,7 @@
 <div class="tab-content">
   <div class="tab-pane active" id="karma">
 
+<% if (Object.keys(karma.week.p).length) { %>
 <div class="row">
   <div class="col-md-6">
     <h1>weekly gain<br/><small>gained for activity in <%- Object.keys(karma.week.p).length %> projects</small></h1>
@@ -61,6 +62,9 @@
 
 <hr />
 
+<% } %>
+
+<% if (Object.keys(karma.month.p).length) { %>
 <div class="row">
   <div class="col-md-6">
     <h1>monthly gain<br/><small>for activity in <%- Object.keys(karma.month.p).length %> projects</small></h1>
@@ -87,6 +91,9 @@
 
 <hr />
 
+<% } %>
+
+<% if (Object.keys(karma.month.p).length) { %>
 <div class="row">
   <div class="col-md-6">
     <h1>yearly gain<br/><small>for activity in <%- Object.keys(karma.later.p).length %> projects</small></h1>
@@ -110,6 +117,7 @@
     </h1>
   </div>
 </div>
+<% } %>
 
   </div>
   <div class="tab-pane" id="contributions">

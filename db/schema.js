@@ -32,7 +32,7 @@ define('Commit', function() {
 define('Repository', function() {
     property('name', String, {index: true});
     property('lastCheckedAt', Date, {default: function () {return new Date(0)}});
-    property('karma', Number);
+    property('karma', Number, {sort: true});
     property('watchers', Number);
     property('stars', Number);
     property('forks', Number);
