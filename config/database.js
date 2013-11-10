@@ -11,7 +11,7 @@ module.exports =
   }
   , "production":
     { "driver":   "redis-hq",
-    "database": 6,
+    "database": 3,
     "host": "162.243.60.106"
     }
   };
