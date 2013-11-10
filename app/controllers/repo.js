@@ -10,7 +10,7 @@ RepoController.prototype.show = function( c ) {
             c.next(err);
         }
         if (!data) {
-            c.Repository.create({name: name}, function(force, data) {
+            c.Repository.create(name, function(err, data) {
                 c.send(data);
             });
         } else {
