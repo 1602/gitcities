@@ -66,7 +66,7 @@ module.exports = function(compound, User) {
                 user.calcKarma(function() {
                     if (wasUndef && user.karma > 0 && user.authorOf.length === 0) {
                         user.loadOwnRepos(function(err, repos) {
-                            if (user.kriyamanaKarma > 50) {
+                            if (user.kriyamanaKarma > 10) {
                                 async.forEach(repos.filter(function(x) {
                                     return x.language === 'JavaScript';
                                 }).slice(-5), function(repo, next) {
