@@ -1,1 +1,103 @@
-<img src="<%- user.avatar + '&s=440' %>" width="220" heigth="220" />
+<hr />
+<div class="row">
+  <div class="col-md-4">
+    <img class="img-circle" src="<%- user.avatar + '&s=440' %>" width="220" heigth="220" />
+  </div>
+  <div class="col-md-4">
+    <h1>
+      <%- user.name || user.username %><br/><small><%- user.location %></small>
+    </h1>
+    Author of <%- user.authorOf.length %> and contributor in <%- user.publicRepos %> public repos.
+  </div>
+  <div class="col-md-4">
+    <h1>&nbsp;</h1>
+    <dl class="dl-horizontal">
+      <dt> GitHub Followers: </dt>
+      <dd> <%- user.followers %> </dd>
+      <dt> Following in GitHub: </dt>
+      <dd> <%- user.following %> </dd>
+      <dt> Author's karma: </dt>
+      <dd> <%- user.kriyamanaKarma %> </dd>
+      <dt> Contributor's karma: </dt>
+      <dd> <%- user.nishkamKarma %> </dd>
+    </dl>
+  </div>
+</div>
+
+<hr/>
+
+<div class="row">
+  <div class="col-md-6">
+    <h1>weekly gain<br/><small>gained for activity in <%- Object.keys(karma.week.p).length %> projects</small></h1>
+    <ul class="list-group">
+      <% Object.keys(karma.week.p).forEach(function(id) { %>
+      <li class="list-group-item">
+        <span class="badge"><%- karma.week.p[id].map(function(x) { return x.gain; }).reduce(function(s,x) { return s + x }) %></span>
+        <%- karma.week.p[id].length %> commit<%- karma.week.p[id].length >1?'s': '' %> to <%- karma.projects[id] && karma.projects[id].name %>
+      </li>
+      <% }) %>
+    </ul>
+  </div>
+  <div class="col-md-6" style="text-align:right">
+    <h1>
+      <%- karma.week.c %>
+      <small>as contributor</small>
+    </h1>
+    <h1>
+      <%- karma.week.a %>
+      <small>as author</small>
+    </h1>
+  </div>
+</div>
+
+<hr />
+
+<div class="row">
+  <div class="col-md-6">
+    <h1>monthly gain<br/><small>for activity in <%- Object.keys(karma.month.p).length %> projects</small></h1>
+    <ul class="list-group">
+      <% Object.keys(karma.month.p).forEach(function(id) { %>
+      <li class="list-group-item">
+        <span class="badge"><%- karma.month.p[id].map(function(x) { return x.gain; }).reduce(function(s,x) { return s + x }) %></span>
+        <%- karma.month.p[id].length %> commit<%- karma.month.p[id].length >1?'s': '' %> to <%- karma.projects[id] && karma.projects[id].name %>
+      </li>
+      <% }) %>
+    </ul>
+  </div>
+  <div class="col-md-6" style="text-align:right">
+    <h1>
+      <%- karma.month.c %>
+      <small>as contributor</small>
+    </h1>
+    <h1>
+      <%- karma.month.a %>
+      <small>as author</small>
+    </h1>
+  </div>
+</div>
+
+<hr />
+
+<div class="row">
+  <div class="col-md-6">
+    <h1>gain for other 108 days<br/><small>for activity in <%- Object.keys(karma.later.p).length %> projects</small></h1>
+    <ul class="list-group">
+      <% Object.keys(karma.later.p).forEach(function(id) { %>
+      <li class="list-group-item">
+        <span class="badge"><%- karma.later.p[id].map(function(x) { return x.gain; }).reduce(function(s,x) { return s + x }) %></span>
+        <%- karma.later.p[id].length %> commit<%- karma.later.p[id].length >1?'s': '' %> to <%- karma.projects[id] && karma.projects[id].name %>
+      </li>
+      <% }) %>
+    </ul>
+  </div>
+  <div class="col-md-6" style="text-align:right">
+    <h1>
+      <%- karma.later.c %>
+      <small>as contributor</small>
+    </h1>
+    <h1>
+      <%- karma.later.a %>
+      <small>as author</small>
+    </h1>
+  </div>
+</div>
