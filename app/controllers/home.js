@@ -12,7 +12,7 @@ HomeController.prototype.show = function(c) {
         c.render(cache);
     } else {
 
-        c.Repository.all({order: 'stars DESC', limit: 100}, function(err, cities) {
+        c.Repository.all({order: 'karma desc', limit: 30}, function(err, cities) {
             c.User.all({order: 'karma desc', limit: limit}, function(err, users) {
                 cache = {
                     citizens: users.map(prepare),
