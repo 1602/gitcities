@@ -12,15 +12,28 @@ module.exports = function(compound, Repository) {
 
     Repository.validatesUniquenessOf('name');
 
+    Repository.getter.karma = function() {
+        with (this) {
+            return stars + network * 2 + subscribers * 3 - issues * 5;
+        }
+    };
+
     Repository.create = function(name, cb) {
-        var r = new Repository({name: name});
-        r.loadStats(true, function(err) {
-            if (!err) {
-                r.save(cb);
-                r.syncAllData();
-            } else if (cb) {
-                cb(err);
+        Repository.findOne({where: {name: name}}, function(err, repo) {
+            if (repo) {
+                return cb(err, repo);
             }
+            var r = new Repository({name: name});
+            r.loadStats(true, function(err) {
+                if (!err) {
+                    r.syncAllData(function() {
+                        r.lastCheckedAt = new Date();
+                        r.save(cb);
+                    });
+                } else if (cb) {
+                    cb(err);
+                }
+            });
         });
     };
 
@@ -47,9 +60,8 @@ module.exports = function(compound, Repository) {
             },
             function(next) {
                 repo.loadContributors(next);
-            },
-            done
-        ]);
+            }
+        ], done);
     };
 
     Repository.processNext = function(cb) {

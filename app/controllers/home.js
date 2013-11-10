@@ -12,12 +12,17 @@ HomeController.prototype.show = function(c) {
         c.render(cache);
     } else {
 
-        c.User.all({order: 'karma desc', limit: limit}, function(err, users) {
-            cache = {
-                citizens: users.map(prepare),
-            };
-            c.render(cache);
+        c.Repository.all({order: 'stars DESC', limit: 100}, function(err, cities) {
+            c.User.all({order: 'karma desc', limit: limit}, function(err, users) {
+                cache = {
+                    citizens: users.map(prepare),
+                    cities: cities
+                };
+                c.render(cache);
+            });
+
         });
+
     }
 
     function prepare(user) {

@@ -4,6 +4,11 @@
   <div class="col-md-12"><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;">Programming languages are represented as countries, git repositories are the cities and forks are citizens. No matter what real cities the users are from github users become citizens of their cities. This is a new world, an open source one which is being built around open source projects.</span></p><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;text-decoration:none;">&nbsp;</span></p></div>
 </div>
 
+<% cities.forEach(function(city) { %>
+<%- city.name %>
+<%- city.stars %>
+<% }) %>
+
 
 <div class="row">
   <div class="col-md-12">
