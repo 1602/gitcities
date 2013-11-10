@@ -5,15 +5,15 @@ module.exports = function (compound) {
 
     app.configure('production', function () {
 
-        Repository.processNext(function again() {
+        app.compound.models.Repository.processNext(function again() {
             setTimeout(function() {
-                Repository.processNext(again);
+                app.compound.models.Repository.processNext(again);
             }, 200);
         });
 
-        User.processNext(function anotherUser() {
+        app.compound.models.User.processNext(function anotherUser() {
             setTimeout(function() {
-                User.processNext(anotherUser);
+                app.compound.models.User.processNext(anotherUser);
             }, 200);
         });
 
