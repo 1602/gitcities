@@ -1,26 +1,17 @@
-
 <div class="row">
   <div class="col-md-12">
-    <h2>Meet our most active Node citizens</h2>
-<div class="row">
-  <div class="col-md-12"><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;">What we did? We have citizens the statistics for Javascript forks particularly node.js from Github and calculated Karma. There are two Karmas: author and contributor Karma. Currently we take into account commits and time of commits. 
-<br>What's next: we'll improve algorithms of calculating Karma to take into account user activities such as commit rates, comments and issues.</span></p><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;text-decoration:none;">&nbsp;</span></p></div>
-</div>
-
-
-    <% citizens.forEach(function(user) { %><a href="/<%- user.username %>" data-toggle="popover" data-html="true" data-trigger="hover" data-placement="top" data-content="<strong><%- user.name || user.username%></strong><br/><%- user.location %><hr/>Contibutor's karma: <strong><%- user.nishkamKarma %></strong><br/>Author's karma: <strong><%- user.kriyamanaKarma %></strong>"><img src="<%- user.avatar ? user.avatar + '&s=160' : 'http://placehold.it/160x160' %>" width="80" heigth="80" /></a><% }) %>
+    <% citizens.forEach(function(user) { %><a href="/<%- user.username %>" data-toggle="popover" data-html="true" data-trigger="hover" data-placement="bottom" data-content="<strong><%- user.name || user.username%></strong><br/><%- user.location %><hr/>Contibutor's karma: <strong><%- user.nishkamKarma %></strong><br/>Author's karma: <strong><%- user.kriyamanaKarma %></strong>"><img src="<%- user.avatar ? user.avatar + '&s=160' : 'http://placehold.it/160x160' %>" width="80" heigth="80" /></a><% }) %>
   </div>
 </div>
 
-<br>
-<br>
+<hr/>
 
 <div class="row">
   <div class="col-md-12">
     <h2>The largest cities in Node.JS world</h2>
 <div class="row">
   <div class="col-md-12"><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;">We have calculated the rating of node.js cities based the stars, contributors, subscribers, open issues and forks. Based on the rating we have built the list of the largest node.JS cities. 
-<br> What's next? The rating will be improved in order to take into accounty city dynamics, e.g. commits, activities, etc. </span></p><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;text-decoration:none;">&nbsp;</span></p></div>
+<br> What's next? The rating formula will be improved in order to take into accounty city dynamics, e.g. commits, activities, etc. </span></p><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;text-decoration:none;">&nbsp;</span></p></div>
 
 <ul class="nav nav-pills">
   <% cities.forEach(function(city) { %>

@@ -9,13 +9,13 @@ module.exports = function (compound) {
             app.compound.models.Repository.processNext(function again() {
                 setTimeout(function() {
                     app.compound.models.Repository.processNext(again);
-                }, 200);
+                }, 300);
             });
 
             app.compound.models.User.processNext(function anotherUser() {
                 setTimeout(function() {
                     app.compound.models.User.processNext(anotherUser);
-                }, 200);
+                }, 300);
             });
         });
 

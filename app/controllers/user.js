@@ -5,6 +5,10 @@ function UserController() {
 
 var cache = {};
 
+setInterval(function() {
+    for (var i in cache) delete cache[i];
+}, 1000);
+
 UserController.prototype.show = function(c) {
 
     var name = c.req.param('username');

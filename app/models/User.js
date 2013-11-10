@@ -178,15 +178,4 @@ module.exports = function(compound, User) {
         ]);
     };
 
-    compound.models.Repository.processNext(function again() {
-        setTimeout(function() {
-            compound.models.Repository.processNext(again);
-        }, 200);
-    });
-
-    compound.models.User.processNext(function anotherUser() {
-        setTimeout(function() {
-            compound.models.User.processNext(anotherUser);
-        }, 200);
-    });
 };
