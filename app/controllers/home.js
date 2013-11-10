@@ -3,17 +3,25 @@ module.exports = HomeController;
 function HomeController() {
 }
 
+var cache, limit = 50;
+
 HomeController.prototype.show = function(c) {
     this.title = 'Opensource world';
 
-    c.User.all({order: 'nishkamKarma desc', limit: 20}, function(err, users) {
-        c.User.all({order: 'kriyamanaKarma desc', limit: 20}, function(err, authors) {
-            c.render({
-                topContributors: users.map(prepare),
-                topAuthors: authors.map(prepare)
+    if (cache && !c.req.param('nocache')) {
+        c.render(cache);
+    } else {
+
+        c.User.all({order: 'nishkamKarma desc', limit: limit}, function(err, users) {
+            c.User.all({order: 'kriyamanaKarma desc', limit: limit}, function(err, authors) {
+                cache = {
+                    topContributors: users.map(prepare),
+                    topAuthors: authors.map(prepare)
+                };
+                c.render(cache);
             });
         });
-    });
+    }
 
     function prepare(user) {
         user = user.toObject();

@@ -1,15 +1,14 @@
+<h1>Opensource citizens</h1>
 <div class="row">
   <div class="col-md-6">
     <div class="panel panel-default">
     <div class="panel-heading">
       <strong>
-        Top 20 contributors
+        Top contributors
       </strong>
     </div>
     <div class="panel-body">
-      <% topContributors.forEach(function(user) { %>
-      <a href="/<%- user.username %>" data-toggle="popover" data-trigger="hover" data-placement="right" data-content="<%- user.name + ' ' + user.nishkamKarma %>"><img src="<%- user.avatar %>" width="80" heigth="80" /></a> <!--%- linkTo(user.name || user.username, '/' + user.username) %> <%- user.nishkamKarma %><br/-->
-      <% }) %>
+      <% topContributors.forEach(function(user) { %><a href="/<%- user.username %>" data-toggle="popover" data-html="true" data-trigger="hover" data-placement="top" data-content="<strong><%- user.name || user.username%></strong><br/><%- user.location %><hr/>Contibutor's karma: <strong><%- user.nishkamKarma %></strong><br/>Author's karma: <strong><%- user.kriyamanaKarma %></strong>"><img src="<%- user.avatar || 'http://placehold.it/80x80' %>" width="80" heigth="80" /></a><% }) %>
     </div>
     </div>
   </div>
@@ -18,15 +17,18 @@
     <div class="panel panel-default">
     <div class="panel-heading">
       <strong>
-        Top 20 authors
+        Top authors
       </strong>
     </div>
     <div class="panel-body">
-      <% topAuthors.forEach(function(user) { %>
-      <a href="/<%- user.username %>"><img src="<%- user.avatar %>" width="80" heigth="80" /></a> <!--%- linkTo(user.name || user.username, '/' + user.username) %> <%- user.kriyamanaKarma %><br/-->
-      <% }) %>
+      <% topAuthors.forEach(function(user) { %><a href="/<%- user.username %>" data-toggle="popover" data-html="true" data-trigger="hover" data-placement="top" data-content="<strong><%- user.name || user.username%></strong><br/><%- user.location %><hr/>Contibutor's karma: <strong><%- user.nishkamKarma %></strong><br/>Author's karma: <strong><%- user.kriyamanaKarma %></strong>"><img src="<%- user.avatar || 'http://placehold.it/80x80' %>" width="80" heigth="80" /></a><% }) %>
     </div>
     </div>
   </div>
 
 </div>
+<script>
+  $(function() {
+    $('a[data-toggle="popover"]').popover();
+  });
+</script>
