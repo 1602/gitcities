@@ -90,7 +90,7 @@ module.exports = function(compound, User) {
         var ownRepos = this.authorOf.map(function(x) {
             return x.id;
         });
-        Commit.all({where: {userId: this.id}}, function(err, cs) {
+        Commit.all({min: Date.now() - 86400000 * 365, max: Date.now(), where: {userId: this.id}}, function(err, cs) {
             cs.forEach(function(c) {
                 var daysAgo = Math.ceil((now - c.date.getTime()) / 86400000) + 1;
                 if (daysAgo <= 1) daysAgo = 2;

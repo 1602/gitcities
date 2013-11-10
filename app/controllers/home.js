@@ -3,7 +3,7 @@ module.exports = HomeController;
 function HomeController() {
 }
 
-var cache, limit = 100;
+var cache, limit = 80;
 
 setInterval(function() {
     cache = null;
@@ -34,4 +34,8 @@ HomeController.prototype.show = function(c) {
         user.authorOf = user.authorOf.length;
         return user;
     }
+};
+
+HomeController.prototype.search = function(c) {
+    c.redirect('/' + c.req.param('name'));
 };

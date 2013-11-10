@@ -7,41 +7,44 @@
 <hr/>
 
 <div class="row">
-  <div class="col-md-12">
-    <h2>The largest cities in Node.JS world</h2>
+  <h2>How can I get information on particular Node citizen or city?</h2>
+
+  <div class="col-md-7">
+    <form class="form" method="POST" action="/">
+      <p>
+        Just enter username or repository name from Github
+      </p>
+      <div class="input-group input-group-lg">
+        <span class="input-group-addon">https://github.com/</span>
+        <input type="text" name="name" class="form-control" placeholder="Username[/Reponame]">
+        <span class="input-group-btn">
+          <input type="submit" value="Go!" class="btn btn-default">
+        </span>
+      </div>
+    </form>
+  </div>
+</div>
+
+<hr/>
+
 <div class="row">
+  <h2>The largest cities in Node.JS world</h2>
   <div class="col-md-12"><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;">We have calculated the rating of node.js cities based the stars, contributors, subscribers, open issues and forks. Based on the rating we have built the list of the largest node.JS cities. 
-<br> What's next? The rating formula will be improved in order to take into accounty city dynamics, e.g. commits, activities, etc. </span></p><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;text-decoration:none;">&nbsp;</span></p></div>
+        <br> What's next? The rating formula will be improved in order to take into accounty city dynamics, e.g. commits, activities, etc. </span></p><p style="text-align:left;"><span style="font-family:Helvetica;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#000000;text-decoration:none;">&nbsp;</span></p></div>
 
-<ul class="nav nav-pills">
-  <% cities.forEach(function(city) { %>
-  <li>
-    <a href="/<%- city.name %>"> <%- city.name %>
-    <span class="badge">
-      <%- city.karma %>
-    </span>
-    </a>
-  </li>
-  <% }) %>
-</ul>
-
-
-</div>
+  <ul class="nav nav-pills">
+    <% cities.forEach(function(city) { %>
+    <li>
+      <a href="/<%- city.name %>"> <%- city.name %>
+        <span class="badge">
+          <%- city.karma %>
+        </span>
+      </a>
+    </li>
+    <% }) %>
+  </ul>
 </div>
 
-
-<h2>How can I get information on particular Node citizen or city?</h2>
-
-<div class="col-md-5">
-  <form action="">
-    Just enter username or repository name from Github<br>
-    <input type="text" name="fname">
-    <input type="submit" value="Go!">
-  </form>
-  <br>
-</div>
-
-</div>
 
 
 <script>
@@ -49,3 +52,5 @@
     $('a[data-toggle="popover"]').popover();
   });
 </script>
+
+<footer></footer>
