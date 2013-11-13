@@ -57,3 +57,30 @@ UserController.prototype.show = function(c) {
     }
 
 };
+
+UserController.prototype.avatar = function(c) {
+    var name = c.req.param('username');
+    c.User.findOne({where: {username: name}}, function(err, user) {
+        if (!user) {
+            return c.User.find(name, go);
+        } else {
+            go(err, user);
+        }
+    });
+    function go(err, user) {
+        if (!user) {
+            return c.next(new Error(404));
+        }
+        if (user.avatar) {
+            return c.redirect(user.avatar);
+        }
+        user.loadProfile(1, function(err, u) {
+            if (u) {
+                u.save();
+                c.redirect(user.avatar);
+            } else {
+                c.next(new Error(404));
+            }
+        });
+    }
+};
