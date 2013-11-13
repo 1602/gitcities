@@ -1,17 +1,14 @@
 module.exports = 
   { "development":
     { "driver":   "redis-hq",
-    "database": 3,
-    "host": "162.243.60.106"
+    "database": 1
     }
   , "test":
     { "driver":   "redis-hq",
-    "database": 3,
-    "host": "162.243.60.106"
+    "database": 2
   }
   , "production":
     { "driver":   "redis-hq",
-    "database": 3,
-    "host": "162.243.60.106"
+    "database": 3
     }
   };
