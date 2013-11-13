@@ -1,9 +1,8 @@
 #!/usr/bin/env node
-require('nko')('FRX_lGKhkFPuvGLS');
 
 var isProduction = (process.env.NODE_ENV === 'production');
 var http = require('http');
-var port = (isProduction ? 80 : 3000);
+var port = (isProduction ? 4000 : 3000);
 var host = process.env.HOST || '0.0.0.0';
 
 /**
