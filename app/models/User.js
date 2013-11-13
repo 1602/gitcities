@@ -128,6 +128,16 @@ module.exports = function(compound, User) {
                 user.publicRepos = data.public_repos;
                 user.followers = data.followers;
                 user.following = data.following;
+                user.contributions(function(err, cs) {
+                    cs.forEach(function(cs) {
+                        cs.u = cs.u || {}
+                        cs.u.id = user.id;
+                        cs.u.avatar = user.avatar;
+                        cs.u.name = user.name;
+                        cs.u.login = user.username;
+                        cs.save();
+                    });
+                });
                 cb(null, user);
             } else {
                 cb(err, null);
@@ -138,10 +148,6 @@ module.exports = function(compound, User) {
     User.processNext = function(cb) {
         User.findOne({order: 'lastCheckedAt ASC'}, function(err, user) {
             if (user) {
-                if (user.lastCheckedAt > new Date(10)) {
-                    console.log('FINISHED');
-                    return;
-                }
                 var wasUndef = typeof user.karma === 'undefined';
                 user.calcKarma(function() {
                     if (wasUndef && user.karma > 0 && user.authorOf.length === 0) {

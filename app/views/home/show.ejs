@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-12">
-    <% citizens.forEach(function(user) { %><a href="/<%- user.username %>" data-toggle="popover" data-html="true" data-trigger="hover" data-placement="bottom" data-content="<strong><%- user.name || user.username%></strong><br/><%- user.location %><hr/>Contibutor's karma: <strong><%- user.nishkamKarma %></strong><br/>Author's karma: <strong><%- user.kriyamanaKarma %></strong>"><img src="<%- user.avatar ? user.avatar + '&s=160' : 'http://placehold.it/160x160' %>" width="80" heigth="80" /></a><% }) %>
+    <% citizens.forEach(function(user) { %><a href="/<%- user.username %>" data-toggle="popover" data-html="true" data-trigger="hover" data-placement="bottom" data-content="<strong><%- user.name || user.username%></strong><br/><%- user.location %><hr/>Contibutor's karma: <strong><%- user.nishkamKarma %></strong><br/>Author's karma: <strong><%- user.kriyamanaKarma %></strong>"><img src="<%- user.avatar ? user.avatar + '&s=160' : '/users/avatar/' + user.username %>" width="80" heigth="80" /></a><% }) %>
   </div>
 </div>
 
