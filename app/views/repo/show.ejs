@@ -1,5 +1,39 @@
 <h1><%= repository.name %></h1>
 
 <pre>
-<%- JSON.stringify(repository, '  ', '  ') %>
+<% JSON.stringify(repository, '  ', '  ') %>
 </pre>
+
+<h2>Mayor</h2>
+<div class="row">
+  <div class="col-md-4">
+    <h1>
+      <%- citizens.mayor.u.name %>
+    </h1>
+  </div>
+  <div class="col-md-4">
+    <img class="img-circle" align="center" width="160" heght="160" src="<%- citizens.mayor.u.avatar ? citizens.mayor.u.avatar + '&s=320' : '/users/avatar/' + (citizens.mayor.u.login || citizens.mayor.userId) %>" />
+  </div>
+  <div class="col-md-4">
+  <%- citizens.mayor.count %> contributions with total score of
+  <%- Math.round(citizens.mayor.weight) %>
+  </div>
+</div>
+
+<h2>City hall</h2>
+
+<div class="row">
+  <% citizens.active.forEach(function(c) { %>
+  <div class="col-sm-3 col-md-3">
+    <div class="thumbnail">
+      <img class="img-circle" width="80" heght="80" src="<%- c.u.avatar ? c.u.avatar + '&s=160' : '/users/avatar/' + (c.u.login || c.userId) %>" />
+      <div class="caption">
+        <h3><a href="/<%- c.u.login %>"><%- c.u.name %></a><br/>
+          <small><%- makeGutHubLink(c.u.login) %></small>
+        </h3>
+      <strong><%- c.count %></strong> contributions with total score of <strong><%- Math.round(c.weight) %></strong>
+      </div>
+    </div>
+  </div>
+  <% }) %>
+</div>

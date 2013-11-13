@@ -9,8 +9,11 @@ RepoController.prototype.show = function( c ) {
         if (err) {
             c.next(err);
         } else {
-            c.render({
-                repository: repo
+            repo.loadCitizens(function(err, citizens) {
+                c.render({
+                    repository: repo,
+                    citizens: citizens
+                });
             });
         }
     });
