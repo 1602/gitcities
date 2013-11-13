@@ -1,14 +1,14 @@
 {
-  "name": "nko4-nodespots",
+  "name": "gc",
   "version": "0.0.0",
   "description": "Nodespots",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:nko4/nodespots.git"
+    "url": "git@github.com:1602/gitcities.git"
   },
   "dependencies": {
     "nko": "*",
@@ -28,7 +28,8 @@
     "co-generators": "0.0.1-8",
     "stylus": "~0.40.0",
     "async": "~0.2.9",
-    "coffee-script": "*"
+    "coffee-script": "*",
+    "parse-link-header": "~0.1.0"
   },
   "engines": {
     "node": "0.10.x"
