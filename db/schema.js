@@ -21,7 +21,7 @@ define('User', function() {
 
 define('Commit', function() {
     property('id', String);
-    property('userId', Number, {index: true});
+    property('userId', String, {index: true});
     property('repoId', Number, {index: true});
     property('message', String);
     property('date', Date);
@@ -31,6 +31,8 @@ define('Commit', function() {
 
 define('Repository', function() {
     property('name', String, {index: true});
+    property('ownerId', Number);
+    property('owner', JSON);
     property('lastCheckedAt', Date, {default: function () {return new Date(0)}});
     property('karma', Number, {sort: true});
     property('watchers', Number);
@@ -46,7 +48,13 @@ define('Repository', function() {
 });
 
 define('Contribution', function() {
-    property('count', Number)
+    property('id', String);
+    property('count', Number);
+    property('weight', Number);
+    property('updatedAt', Date);
+    property('u', JSON);
 
-    set('defaultSort', 'count DESC');
+    set('defaultSort', 'weight DESC');
 });
+
+function JSON(){}
