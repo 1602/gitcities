@@ -4,7 +4,7 @@
 
 <hr />
 
-<strong><%= repository.name %></strong><br/>
+<a href="https://github.com/<%= repository.name %>"><img src="/images/Github-Mark-64px.png" width="32" height="32" /></a> <strong><a href="/<%= repository.name %>"><%= repository.name %></a></strong><br/>
 <abbr title="population">p</abbr>: <%- citizens.totalCount %> |
 <abbr title="commits">c</abbr>: <%- commitsCount %> |
 <abbr title="founded">f</abbr>: <%- moment(repository.createdAt).fromNow() %> |
@@ -17,21 +17,29 @@
 
 <div class="row">
   <div class="col-md-3">
-    <div class="thumbnail">
-      <img class="img-circle" width="160" heght="160" src="<%- avatar(citizens.mayor, 160) %>" />
+      <div style="width: 160px; height: 160px; margin:0 auto;">
+        <img class="img-circle" width="160" heght="160" src="<%- avatar(citizens.mayor, 160) %>" />
+      </div>
       <div class="caption">
         <center>
           <strong>
             <%- percent(citizens.mayor.count / commitsCount) %> of all commits
           </strong>
         </center>
+          his other top contributions: ...
       </div>
-    </div>
   </div>
   <div class="col-md-3">
-    <div class="thumbnail">
       <div style="width: 160px; height: 160px; margin:0 auto;">
-        <% citizens.active.forEach(function(c,i) { ccs += c.count %><img class="img" width="40" heght="40" src="<%- avatar(c, 40) %>" /><%- ((i+1)%4===0)?'<br/>':'' %><% }) %>
+        <% citizens.active.forEach(function(c,i) { ccs += c.count %><a
+          href="/<%- c.u.login %>"
+          data-toggle="popover"
+          data-html="true"
+          data-trigger="hover"
+          data-placement="bottom auto"
+          data-title="<%- c.u.name || c.u.login %></a>"
+          data-content="Contributions: <%- c.count %> (<%- percent(c.count/commitsCount) %>)<br/> Current score: <%- c.formatWeight() %>"
+        ><img class="img" width="40" heght="40" src="<%- avatar(c, 40) %>" alt="" /><%- ((i+1)%4===0)?'<br/>':'' %></a><% }) %>
       </div>
       <div class="caption">
         <center>
@@ -39,8 +47,18 @@
             <%- percent(ccs / commitsCount) %> of all commits
           </strong>
         </center>
+          their other top contributions: ...
       </div>
+  </div>
+  <div class="col-md-6">
+    <h3>Latest activity</h3>
+    <% [].forEach(function(ci) { %>
+    <div class="">
+      <a href="https://github.com/<%- repository.name %>/commit/<%- ci.id %>">
+        <%- ci.message %>
+      </a>
     </div>
+    <% }) %>
   </div>
 </div>
 
