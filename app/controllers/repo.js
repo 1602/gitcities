@@ -9,10 +9,13 @@ RepoController.prototype.show = function( c ) {
         if (err) {
             c.next(err);
         } else {
-            repo.loadCitizens(function(err, citizens) {
-                c.render({
-                    repository: repo,
-                    citizens: citizens
+            repo.loadCitizens(100, function(err, citizens) {
+                c.Commit.count({repoId: repo.id}, function(err, cc) {
+                    c.render({
+                        commitsCount: cc,
+                        repository: repo,
+                        citizens: citizens
+                    });
                 });
             });
         }

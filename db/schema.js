@@ -34,6 +34,8 @@ define('Repository', function() {
     property('ownerId', Number);
     property('owner', JSON);
     property('lastCheckedAt', Date, {default: function () {return new Date(0)}});
+    property('createdAt', Date);
+    property('pushedAt', Date);
     property('karma', Number, {sort: true});
     property('watchers', Number);
     property('stars', Number);

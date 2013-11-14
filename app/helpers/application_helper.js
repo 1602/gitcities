@@ -7,3 +7,7 @@ exports.makeGutHubLink = function(s) {
     }
     return '<a href="https://github.com/' + link + '">' + s + '</a>';
 };
+
+exports.percent = function(v) {
+    return Math.round(10000 * v) / 100 + '%';
+};

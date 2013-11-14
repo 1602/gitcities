@@ -23,7 +23,16 @@ module.exports = function(compound, Repository) {
     Repository.create = function(name, cb) {
         Repository.findOne({where: {name: name}}, function(err, repo) {
             if (repo) {
-                return cb(err, repo);
+                if (Date.now() - repo.lastCheckedAt > 300000) {
+                    repo.loadStats(function() {
+                        repo.lastCheckedAt = new Date();
+                        repo.save();
+                        cb(null, repo);
+                    });
+                } else {
+                    cb(null, repo);
+                }
+                return;
             }
             var r = new Repository({name: name});
             r.loadStats(true, function(err) {
@@ -42,17 +51,50 @@ module.exports = function(compound, Repository) {
         });
     };
 
-    Repository.prototype.loadCitizens = function(cb) {
-        this.contributions({limit: 100}, function(err, cs) {
-            cs.forEach(function(x) {
-                if (x.u.mayorships.length) {
-                    console.log(x.u);
+    Repository.prototype.loadCitizens = function(limit, cb) {
+        if ('function' === typeof limit) {
+            cb = limit;
+            limit = 20;
+        }
+        this.contributions({limit: limit}, function(err, cs) {
+            var i = 0;
+            async.forEach(cs, function(c, done) {
+                c.n = ++i;
+                if (c.u && (c.u.name || c.u.avatar) || c.n > 13) {
+                    done();
+                } else {
+                    User.find(c.userId, function(err, u) {
+                        if (u.name || u.avatar || c.n > 13) {
+                            c.u = {
+                                id: u.id,
+                                login: u.username,
+                                avatar: u.avatar,
+                                name: u.name
+                            };
+                            done();
+                            c.save();
+                        } else {
+                            u.loadProfile(true, function() {
+                                u.save();
+                                c.u = {
+                                    id: u.id,
+                                    login: u.username,
+                                    avatar: u.avatar,
+                                    name: u.name
+                                };
+                                c.save();
+                                done();
+                            });
+                        }
+                    });
                 }
-            });
-            cb(err, {
-                mayor: cs[0],
-                active: cs.slice(1, 13),
-                others: cs.slice(13, cs.length)
+            }, function() {
+                cb(err, {
+                    mayor: cs[0],
+                    active: cs.slice(1, 17),
+                    others: cs.slice(17, cs.length),
+                    totalCount: cs.countBeforeLimit
+                });
             });
         });
     };
@@ -97,7 +139,7 @@ module.exports = function(compound, Repository) {
     Repository.prototype.loadAllCommits = function(cb) {
         var repo = this;
         var limit = 10000;
-        var userIds = [];
+        var userIds = {};
         var commits = [];
         compound.gh.get('/repos/' + this.name + '/commits?per_page=100', {}, handlePage);
 
@@ -113,8 +155,8 @@ module.exports = function(compound, Repository) {
                 } else {
                     return next();
                 }
-                if (userIds.indexOf(userId) === -1) {
-                    userIds.push(userId);
+                if (!userIds[userId]) {
+                    userIds[userId] = line.committer ? line.committer.login : true;
                 }
                 var commit = new Commit({
                     id: line.sha,
@@ -149,16 +191,29 @@ module.exports = function(compound, Repository) {
         if (!userIds) {
             userIds = {};
             commits.forEach(function(ci) {
-                userIds[ci.userId] = 1;
+                userIds[ci.userId] = true;
             });
-            userIds = Object.keys(userIds).map(Number).filter(Boolean);
         }
-        var mayor = userIds[0];
-        if (this.owner) {
-            mayor = this.ownerId;
+        var mayor, i = -1, number = /^\d+$/;
+        while (!mayor && commits[++i]) {
+            if (commits[i] && commits[i].userId.match(number)) {
+                mayor = commits[i].userId;
+            }
         }
         var conributions = {};
-        User.all({where: {id:{inq: userIds}}}, function(err, users) {
+        var userIdsArray = Object.keys(userIds);
+        User.all({where: {id:{inq: userIdsArray}}}, function(err, users) {
+            if (userIdsArray.length > users.length) {
+                userIdsArray.forEach(function(userId, done) {
+                    if (!users.some(function(u) {
+                        return u.id === userId;
+                    }) && userIds[userId] !== true) {
+                        var user = new User({username: userIds[userId], id: userId});
+                        users.push(user);
+                        user.save();
+                    }
+                });
+            }
             users.forEach(function(u) {
                 conributions[u.id] = {
                     id: repo.id + ':' + u.id,
@@ -193,6 +248,7 @@ module.exports = function(compound, Repository) {
                 cn.u.commits[week] += isMayor ? 1 : 5;
 
                 // check if current mayorship is ended
+                console.log(conributions[mayor], mayor);
                 if (!isMayor && conributions[mayor].weight < cn.weight) {
                     conributions[mayor].u.mayorships.push({end: ci.toObject()});
                     conributions[mayor].isMayor = 0;
@@ -223,13 +279,12 @@ module.exports = function(compound, Repository) {
         var repo = this;
         async.series([
             function(next) {
-                repo.loadCommits(next);
+                repo.loadAllCommits(function(err, us, cs) {
+                    repo.buildContributionHistory(cs, us, next);
+                });
             },
             function(next) {
                 repo.loadCollaborators(next);
-            },
-            function(next) {
-                repo.loadContributors(next);
             }
         ], done);
     };
@@ -264,7 +319,10 @@ module.exports = function(compound, Repository) {
                     avatar: data.owner.avatar_url
                 };
                 repo.homepage = data.homepage;
+                repo.description = data.description;
                 repo.watchers = data.watchers_count;
+                repo.pushedAt = moment(data.pushed_at);
+                repo.createdAt = moment(data.created_at);
                 repo.fork = 'source' in data ? data.source : false;
                 repo.stars = data.stargazers_count;
                 repo.forks = data.forks_count;
