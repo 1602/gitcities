@@ -20,7 +20,7 @@ module.exports = function(compound, Repository) {
         }
     };
 
-    Repository.create = function(name, cb) {
+    Repository.create = function(name, cb, pipe) {
         Repository.findOne({where: {name: name}}, function(err, repo) {
             if (repo) {
                 if (Date.now() - repo.lastCheckedAt > 300000) {
@@ -34,7 +34,13 @@ module.exports = function(compound, Repository) {
                 }
                 return;
             }
+            if (pipe) {
+                cb = function() {
+                    pipe('</body>', true);
+                };
+            }
             var r = new Repository({name: name});
+            r.pipe = pipe;
             r.loadStats(true, function(err) {
                 if (!err) {
                     if (r.fork) {
@@ -43,7 +49,7 @@ module.exports = function(compound, Repository) {
                     r.syncAllData(function() {
                         r.lastCheckedAt = new Date();
                         r.save(cb);
-                    });
+                    }, pipe);
                 } else if (cb) {
                     cb(err);
                 }
@@ -156,11 +162,11 @@ module.exports = function(compound, Repository) {
                     return next();
                 }
                 if (!userIds[userId]) {
-                    userIds[userId] = line.committer ? line.committer.login : true;
+                    userIds[userId] = line.author ? line.author.login : true;
                 }
                 var commit = new Commit({
                     id: line.sha,
-                    date: moment(line.commit.committer.date),
+                    date: moment(line.commit.author.date),
                     message: line.commit.message,
                     userId: userId,
                     repoId: repo.id
@@ -174,6 +180,9 @@ module.exports = function(compound, Repository) {
                     var links = parse(res.headers.link);
                     if (links && links.next && limit > 0) {
                         compound.gh.get(links.next.url.replace('https://api.github.com', ''), {}, handlePage);
+                        if (repo.pipe) {
+                            repo.pipe('commit');
+                        }
                     } else if (cb) {
                         cb(null, userIds, commits);
                     }
@@ -406,7 +415,7 @@ module.exports = function(compound, Repository) {
                     }
                     (new Commit({
                         id: line.sha,
-                        date: moment(line.commit.committer.date),
+                        date: moment(line.commit.author.date),
                         message: line.commit.message,
                         userId: userId,
                         repoId: repo.id

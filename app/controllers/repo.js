@@ -5,6 +5,7 @@ function RepoController(){
 RepoController.prototype.show = function( c ) {
     var name = c.params.username + '/' + c.params.reponame;
     this.title = name;
+    var first = true;
     c.Repository.create(name, function(err, repo) {
         if (err) {
             c.next(err);
@@ -18,6 +19,20 @@ RepoController.prototype.show = function( c ) {
                     });
                 });
             });
+        }
+    }, function(msg, end) {
+        if (first) {
+            first = false;
+            c.render('pipe', {pipe: true}, function(err, html) {
+                c.res.write(html);
+                c.res.write('<script type="text/javascript">pipe("' + msg + '")</script>');
+            });
+            return;
+        }
+        if (end) {
+            c.res.end('<script type="text/javascript">location.href = "/' + name + '";</script></body></html>');
+        } else {
+            c.res.write('<script type="text/javascript">pipe("' + msg + '")</script>');
         }
     });
 };

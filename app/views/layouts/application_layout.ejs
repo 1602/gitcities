@@ -14,6 +14,19 @@
             <%- body %>
 
         </div>
+<% if (typeof pipe === 'undefined') { %>
     </body>
 </html>
+<% } %>
+
 <%- contentFor('javascripts') %>
+
+<script>
+  $(function() {
+    $popovers = $('a[data-toggle="popover"]').popover();
+    // $popovers.popover().on('click', function (e) {
+    //    e.preventDefault();
+    //    $popovers.not(this).popover('hide');
+    // });
+  });
+</script>
