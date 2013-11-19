@@ -13,8 +13,9 @@
   "dependencies": {
     "nko": "*",
     "compound": "~1.1.7-11",
-    "jugglingdb": "~0.2.2",
-    "jugglingdb-redis-hq": "0.0.2-1",
+    "jugglingdb": ">=0.2.4",
+    "jugglingdb-redis-hq": ">=0.0.4",
+    "jugglingdb-mysql": ">=0.0.3",
     "should": "~2.0.2",
     "mocha": "~1.14.0",
     "ejs": "~0.8.4",

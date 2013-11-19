@@ -4,6 +4,7 @@ module.exports = function (compound) {
     var app = compound.app;
 
     app.configure('production', function () {
+        return;
 
         app.compound.on('ready', function() {
             app.compound.models.Repository.processNext(function again() {
