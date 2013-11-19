@@ -69,6 +69,7 @@ module.exports = function(compound, Repository) {
                 if (c.u && (c.u.name || c.u.avatar) || c.n > 13) {
                     done();
                 } else {
+                    console.log('find user' + c.userId);
                     User.find(c.userId, function(err, u) {
                         if (u.name || u.avatar || c.n > 13) {
                             c.u = {
@@ -147,6 +148,9 @@ module.exports = function(compound, Repository) {
         var limit = 10000;
         var userIds = {};
         var commits = [];
+        if (repo.pipe) {
+            repo.pipe('commit');
+        }
         compound.gh.get('/repos/' + this.name + '/commits?per_page=100', {}, handlePage);
 
         function handlePage(err, data, res) {
@@ -267,6 +271,7 @@ module.exports = function(compound, Repository) {
                 }
             });
             async.forEach(Object.keys(conributions), function(userId, next) {
+                repo.pipe && repo.pipe('contributor');
                 (new Contribution(conributions[userId])).save(next);
             }, cb);
         });
@@ -289,6 +294,9 @@ module.exports = function(compound, Repository) {
         async.series([
             function(next) {
                 repo.loadAllCommits(function(err, us, cs) {
+                    if (err) {
+                        console.log(err);
+                    }
                     repo.buildContributionHistory(cs, us, next);
                 });
             },
@@ -420,6 +428,10 @@ module.exports = function(compound, Repository) {
                         userId: userId,
                         repoId: repo.id
                     })).save(next);
+                }, function(err) {
+                    if (err) {
+                        console.log(err);
+                    }
                 });
             }
             if ('function' === typeof cb) {

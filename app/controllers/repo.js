@@ -25,14 +25,20 @@ RepoController.prototype.show = function( c ) {
             first = false;
             c.render('pipe', {pipe: true}, function(err, html) {
                 c.res.write(html);
-                c.res.write('<script type="text/javascript">pipe("' + msg + '")</script>');
+                pipe(msg);
             });
             return;
         }
         if (end) {
             c.res.end('<script type="text/javascript">location.href = "/' + name + '";</script></body></html>');
         } else {
-            c.res.write('<script type="text/javascript">pipe("' + msg + '")</script>');
+            pipe(msg);
         }
     });
+
+    function pipe(msg) {
+        var str = '<script type="text/javascript">pipe("' + msg + '");</script>';
+        console.log(str);
+        c.res.write(str);
+    }
 };

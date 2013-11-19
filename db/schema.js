@@ -1,62 +1,70 @@
-define('User', function() {
-    property('username', String, { index: true });
-    property('email', String, { index: true });
-    property('authorOf', []);
-    property('karma', Number, {sort: true});
-    property('kriyamanaKarma', Number, {sort: true});
-    property('nishkamKarma', Number, {sort: true});
-    property('lastCheckedAt', Date, {sort: true, default: function () {return new Date(0)}});
+exports.main = function(db) {
 
-    property('avatar', String);
-    property('name', String);
-    property('location', String);
-    property('publicRepos', Number);
-    property('followers', Number);
-    property('following', Number);
-    property('languages', [], {index: true});
-    property('visitedAt', Date, {sort: true, index: true});
+    db.define('User', function(m) {
+        m.property('username', String, { index: true, limit: 100});
+        m.property('email', String, { index: true, limit: 100 });
+        m.property('authorOf', []);
+        m.property('karma', Number, {sort: true});
+        m.property('kriyamanaKarma', Number, {sort: true});
+        m.property('nishkamKarma', Number, {sort: true});
+        m.property('lastCheckedAt', Date, {sort: true, default: function () {return new Date(0)}});
 
-    set('defaultSort', 'nishkamKarma DESC');
-});
+        m.property('avatar', String);
+        m.property('name', String);
+        m.property('location', String);
+        m.property('publicRepos', Number);
+        m.property('followers', Number);
+        m.property('following', Number);
+        m.property('languages', [], {index: true, limit: 100});
+        m.property('visitedAt', Date, {sort: true, index: true});
 
-define('Commit', function() {
-    property('id', String);
-    property('userId', String, {index: true});
-    property('repoId', Number, {index: true});
-    property('message', String);
-    property('date', Date);
+        m.set('defaultSort', 'nishkamKarma DESC');
+        m.set('expire', 3);
+    });
 
-    set('defaultSort', 'date DESC');
-});
+    db.define('Commit', function(m) {
+        m.property('id', String);
+        m.property('userId', String, {index: true, limit: 100});
+        m.property('repoId', Number, {index: true});
+        m.property('message', String);
+        m.property('date', Date);
 
-define('Repository', function() {
-    property('name', String, {index: true});
-    property('ownerId', Number);
-    property('owner', JSON);
-    property('lastCheckedAt', Date, {default: function () {return new Date(0)}});
-    property('createdAt', Date);
-    property('pushedAt', Date);
-    property('karma', Number, {sort: true});
-    property('watchers', Number);
-    property('stars', Number);
-    property('forks', Number);
-    property('size', Number);
-    property('issues', Number);
-    property('network', Number);
-    property('subscribers', Number);
-    property('language', String, {index: true});
+        m.set('defaultSort', 'date DESC');
+        m.set('expire', 3);
+    });
 
-    set('defaultSort', 'lastCheckedAt ASC');
-});
+    db.define('Repository', function(m) {
+        m.property('name', String, {index: true, limit: 100});
+        m.property('ownerId', Number);
+        m.property('owner', JSON);
+        m.property('lastCheckedAt', Date, {default: function () {return new Date(0)}});
+        m.property('createdAt', Date);
+        m.property('pushedAt', Date);
+        m.property('karma', Number, {sort: true});
+        m.property('watchers', Number);
+        m.property('stars', Number);
+        m.property('forks', Number);
+        m.property('size', Number);
+        m.property('issues', Number);
+        m.property('network', Number);
+        m.property('subscribers', Number);
+        m.property('language', String, {index: true, limit: 100});
 
-define('Contribution', function() {
-    property('id', String);
-    property('count', Number);
-    property('weight', Number);
-    property('updatedAt', Date);
-    property('u', JSON);
+        m.set('defaultSort', 'lastCheckedAt ASC');
+        m.set('expire', 3);
+    });
 
-    set('defaultSort', 'weight DESC');
-});
+    db.define('Contribution', function(m) {
+        m.property('id', String);
+        m.property('count', Number);
+        m.property('weight', Number);
+        m.property('updatedAt', Date);
+        m.property('u', JSON);
 
-function JSON(){}
+        m.set('defaultSort', 'weight DESC');
+        m.set('expire', 3);
+    });
+
+    function JSON(){}
+
+};

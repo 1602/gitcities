@@ -11,10 +11,22 @@
     margin: 0 auto;
   }
   .commit {
-    width: 20px;
-    height: 20px;
-    background: #999;
-    margin: 3px;
+    background-color: #bbb;
+  }
+  .contributor {
+    background-color: #479;
+  }
+  #output div {
+    text-indent: -9999px;
+    background-image: url(/images/GitHub-Mark-64px.png);
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    background-position: 2px 2px;
+    overflow: hidden;
+    width: 36px;
+    height: 36px;
+    margin: 2px;
+    padding: 2px;
     float: left;
   }
 </style>
@@ -25,10 +37,6 @@
   var $output = $('#output');
 
   function pipe(type) {
-    if (type === 'commit') {
-      $output.append('<div class="commit"></div>');
-    } else {
-      $output.append('<div class="' + type + '"></div>');
-    }
+    $output.append('<div class="' + type + '">' + type + '</div>');
   }
 </script>
